@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iron Hilton — Salgados & Kits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --cream:#FAF3E6;
+    --ink:#2B2320;
+    --gold:#E8A23D;
+    --rust:#B0512A;
+    --olive:#5C6B2E;
+    --card:#FFFDF8;
+    --line: rgba(43,35,32,0.12);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif; margin:0;}
+  .mono{font-family:'Space Mono',monospace;}
+  a{color:inherit;}
+  button{font-family:inherit; cursor:pointer;}
+
+  /* ---------- Stamp / seal signature element ---------- */
+  .stamp{
+    position:relative;
+    width:120px; height:120px;
+    border-radius:50%;
+    background:var(--rust);
+    color:var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    flex-shrink:0;
+    box-shadow: 0 0 0 3px var(--cream), 0 0 0 5px var(--rust);
+    transform:rotate(-6deg);
+  }
+  .stamp-ring{
+    position:absolute; inset:8px;
+    border:1px dashed rgba(250,243,230,0.6);
+    border-radius:50%;
+  }
+  .stamp span{
+    font-family:'Fraunces',serif;
+    font-weight:700;
+    font-size:15px;
+    line-height:1.15;
+    letter-spacing:0.02em;
+  }
+  .stamp small{
+    display:block;
+    font-family:'Space Mono',monospace;
+    font-size:8px;
+    letter-spacing:0.15em;
+    margin-top:2px;
+    opacity:0.85;
+  }
+  .stamp.small{width:44px;height:44px; box-shadow:0 0 0 2px var(--cream), 0 0 0 3px var(--rust);}
+  .stamp.small span{font-size:8px;}
+  .stamp.small small{display:none;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(250,243,230,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-wrap{
+    max-width:1080px; margin:0 auto;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:12px 24px;
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-family:'Fraunces',serif; font-weight:700; font-size:20px;}
+  nav.tabs{display:flex; gap:6px; align-items:center;}
+  .tab-btn{
+    background:none; border:none; padding:8px 14px; border-radius:999px;
+    font-size:14px; font-weight:600; color:var(--ink); opacity:0.6;
+  }
+  .tab-btn.active{opacity:1; background:var(--ink); color:var(--cream);}
+  .icon-btn{
+    background:none; border:1px solid var(--line); border-radius:999px;
+    width:38px; height:38px; display:flex; align-items:center; justify-content:center;
+    position:relative;
+  }
+  .cart-count{
+    position:absolute; top:-6px; right:-6px;
+    background:var(--rust); color:var(--cream);
+    font-size:10px; font-family:'Space Mono',monospace;
+    min-width:18px; height:18px; border-radius:999px;
+    display:flex; align-items:center; justify-content:center; padding:0 3px;
+  }
+  .header-actions{display:flex; gap:8px; align-items:center;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    max-width:1080px; margin:0 auto;
+    padding:64px 24px 48px;
+    display:flex; align-items:center; gap:36px;
+    flex-wrap:wrap;
+  }
+  .hero h1{font-size:clamp(36px,6vw,64px); line-height:1.02; font-weight:700;}
+  .hero .kicker{
+    font-family:'Space Mono',monospace; font-size:12px; letter-spacing:0.18em;
+    text-transform:uppercase; color:var(--rust); margin-bottom:10px; display:block;
+  }
+  .hero p.lead{font-size:17px; max-width:480px; margin:16px 0 26px; opacity:0.85;}
+  .btn-primary{
+    background:var(--ink); color:var(--cream); border:none;
+    padding:14px 26px; border-radius:999px; font-weight:600; font-size:15px;
+  }
+  .btn-ghost{
+    background:none; border:1.5px solid var(--ink); color:var(--ink);
+    padding:12px 24px; border-radius:999px; font-weight:600; font-size:15px;
+  }
+  .hero-actions{display:flex; gap:12px; flex-wrap:wrap;}
+
+  /* ---------- Sobre ---------- */
+  .sobre{
+    max-width:1080px; margin:0 auto; padding:8px 24px 56px;
+    display:flex; gap:28px; align-items:flex-start; flex-wrap:wrap;
+  }
+  .sobre-card{
+    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    padding:26px 28px; flex:1; min-width:260px;
+  }
+  .sobre-card h3{font-size:20px; margin-bottom:10px;}
+  .sobre-card p{font-size:15px; line-height:1.6; opacity:0.85; margin:0;}
+
+  /* ---------- Section title ---------- */
+  .section-head{
+    max-width:1080px; margin:0 auto; padding:0 24px;
+    display:flex; align-items:center; gap:14px; margin-bottom:22px;
+  }
+  .section-head .stamp.small{transform:rotate(4deg);}
+  .section-head h2{font-size:28px;}
+
+  /* ---------- Filters ---------- */
+  .filters{
+    max-width:1080px; margin:0 auto 24px; padding:0 24px;
+    display:flex; gap:8px;
+  }
+  .filter-btn{
+    border:1px solid var(--line); background:var(--card);
+    padding:8px 16px; border-radius:999px; font-size:13px; font-weight:600;
+  }
+  .filter-btn.active{background:var(--olive); color:var(--cream); border-color:var(--olive);}
+
+  /* ---------- Menu grid ---------- */
+  .menu-grid{
+    max-width:1080px; margin:0 auto; padding:0 24px 70px;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px;
+  }
+  .card{
+    background:var(--card); border:1px solid var(--line); border-radius:18px;
+    overflow:hidden; display:flex; flex-direction:column;
+  }
+  .card .img-wrap{width:100%; height:170px; background:#EFE6D3; overflow:hidden;}
+  .card .img-wrap img{width:100%; height:100%; object-fit:cover; display:block;}
+  .card .img-wrap.empty{display:flex; align-items:center; justify-content:center; color:var(--ink); opacity:0.3; font-family:'Space Mono',monospace; font-size:12px;}
+  .card-body{padding:16px 18px; display:flex; flex-direction:column; gap:6px; flex:1;}
+  .card-cat{font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:var(--rust);}
+  .card-body h3{font-size:18px;}
+  .card-body p{font-size:13.5px; opacity:0.75; line-height:1.45; margin:0; flex:1;}
+  .card-foot{display:flex; align-items:center; justify-content:space-between; margin-top:10px;}
+  .price{font-family:'Space Mono',monospace; font-weight:700; font-size:16px;}
+  .add-btn{
+    background:var(--ink); color:var(--cream); border:none;
+    width:34px; height:34px; border-radius:999px; font-size:18px; line-height:1;
+  }
+  .empty-state{
+    max-width:1080px; margin:0 auto; padding:40px 24px; text-align:center; opacity:0.6;
+  }
+
+  /* ---------- Drawer / modal shared ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(43,35,32,0.55); z-index:80;
+    display:none; align-items:flex-start; justify-content:flex-end;
+  }
+  .overlay.open{display:flex;}
+  .overlay.center{align-items:center; justify-content:center; padding:20px;}
+  .panel{
+    background:var(--cream); width:100%; max-width:420px; height:100%;
+    overflow-y:auto; padding:26px 22px 100px; position:relative;
+    animation: slidein 0.25s ease;
+  }
+  @keyframes slidein{from{transform:translateX(24px); opacity:0;} to{transform:translateX(0); opacity:1;}}
+  .modal-box{
+    background:var(--cream); width:100%; max-width:460px; border-radius:20px;
+    padding:30px 26px; max-height:88vh; overflow-y:auto;
+  }
+  .close-x{
+    position:absolute; top:18px; right:18px; background:none; border:none;
+    font-size:22px; opacity:0.6;
+  }
+  .panel h2, .modal-box h2{font-size:22px; margin-bottom:18px;}
+
+  /* cart */
+  .cart-item{display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--line);}
+  .cart-item img{width:56px; height:56px; border-radius:10px; object-fit:cover; background:#EFE6D3;}
+  .cart-item .ci-info{flex:1;}
+  .cart-item .ci-name{font-weight:600; font-size:14px;}
+  .qty-ctrl{display:flex; align-items:center; gap:8px; margin-top:6px;}
+  .qty-ctrl button{width:24px; height:24px; border-radius:6px; border:1px solid var(--line); background:var(--card); font-size:14px;}
+  .cart-summary{margin-top:16px; padding-top:14px; border-top:1px dashed var(--line); font-size:14px;}
+  .cart-summary .row{display:flex; justify-content:space-between; margin-bottom:6px;}
+  .cart-summary .total{font-weight:700; font-size:17px; margin-top:8px;}
+
+  label{display:block; font-size:12.5px; font-weight:600; margin:14px 0 5px; opacity:0.8;}
+  input[type=text], input[type=tel], input[type=number], textarea, select{
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--line);
+    background:var(--card); font-family:inherit; font-size:14px; color:var(--ink);
+  }
+  textarea{resize:vertical; min-height:60px;}
+  .pix-box{
+    background:var(--card); border:1px dashed var(--rust); border-radius:12px;
+    padding:14px; margin-top:14px;
+  }
+  .pix-box .key{font-family:'Space Mono',monospace; font-size:13px; word-break:break-all;}
+  .copy-btn{margin-top:8px; background:var(--rust); color:var(--cream); border:none; padding:8px 14px; border-radius:999px; font-size:12.5px; font-weight:700;}
+  .whats-btn{
+    width:100%; margin-top:18px; background:var(--olive); color:var(--cream); border:none;
+    padding:14px; border-radius:12px; font-weight:700; font-size:15px;
+  }
+  .radio-row{display:flex; gap:14px; margin-top:6px;}
+  .radio-row label{display:flex; align-items:center; gap:6px; font-weight:500; margin:0;}
+  .img-preview{width:100%; height:130px; border-radius:10px; background:#EFE6D3; margin-top:8px; object-fit:cover; display:none;}
+
+  /* admin */
+  .admin-tabs{display:flex; gap:6px; margin-bottom:16px; flex-wrap:wrap;}
+  .admin-tab-btn{flex:1; min-width:72px; padding:9px 4px; border-radius:10px; border:1px solid var(--line); background:var(--card); font-weight:600; font-size:12px;}
+  .admin-tab-btn.active{background:var(--ink); color:var(--cream);}
+  .save-btn{width:100%; margin-top:16px; background:var(--ink); color:var(--cream); border:none; padding:12px; border-radius:10px; font-weight:700;}
+  .item-row{
+    display:flex; gap:10px; align-items:center; padding:10px; border:1px solid var(--line);
+    border-radius:12px; margin-bottom:8px; background:var(--card);
+  }
+  .item-row img{width:44px; height:44px; border-radius:8px; object-fit:cover; background:#EFE6D3;}
+  .item-row .ir-info{flex:1;}
+  .item-row .ir-name{font-weight:600; font-size:13.5px;}
+  .item-row .ir-meta{font-size:11px; opacity:0.6;}
+  .ir-actions{display:flex; gap:6px;}
+  .ir-actions button{border:none; background:none; font-size:15px; opacity:0.7;}
+  .pw-input{text-align:center; font-size:22px; letter-spacing:6px; font-family:'Space Mono',monospace;}
+  .msg{font-size:12.5px; margin-top:8px;}
+  .msg.error{color:var(--rust);}
+  .msg.ok{color:var(--olive);}
+  .status-dot{display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--olive); margin-right:6px;}
+
+  .stock-badge{
+    font-family:'Space Mono',monospace; font-size:10px; padding:2px 8px; border-radius:999px;
+    display:inline-block; margin-top:4px; width:fit-content;
+  }
+  .stock-badge.low{background:rgba(176,81,42,0.15); color:var(--rust);}
+  .stock-badge.out{background:rgba(43,35,32,0.15); color:var(--ink);}
+  .add-btn:disabled{opacity:0.3; cursor:not-allowed;}
+
+  .cat-manage{display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;}
+  .cat-chip{
+    display:flex; align-items:center; gap:6px; background:var(--card); border:1px solid var(--line);
+    border-radius:999px; padding:5px 6px 5px 12px; font-size:12.5px;
+  }
+  .cat-chip button{background:none; border:none; opacity:0.5; font-size:13px; padding:2px 4px;}
+  .cat-add-row{display:flex; gap:8px; margin-top:8px;}
+  .cat-add-row input{flex:1;}
+  .cat-add-row button{padding:0 14px; border-radius:10px; border:none; background:var(--ink); color:var(--cream); font-weight:700;}
+
+  .order-row{
+    border:1px solid var(--line); border-radius:14px; padding:14px; margin-bottom:10px; background:var(--card);
+  }
+  .order-row .or-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;}
+  .order-row .or-date{font-family:'Space Mono',monospace; font-size:11px; opacity:0.6;}
+  .order-row .or-name{font-weight:700; font-size:14.5px;}
+  .order-row .or-total{font-family:'Space Mono',monospace; font-weight:700;}
+  .order-row .or-items{font-size:12.5px; opacity:0.75; margin:6px 0; line-height:1.5;}
+  .order-row .or-meta{font-size:12px; opacity:0.65; margin-top:4px;}
+  .order-row .or-receipt{margin-top:8px;}
+  .order-row .or-receipt img{width:80px; height:80px; object-fit:cover; border-radius:8px; cursor:pointer;}
+  .order-row .or-receipt-missing{font-size:11.5px; opacity:0.5; font-style:italic;}
+
+  .stat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:20px;}
+  .stat-box{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; text-align:center;}
+  .stat-box .stat-label{font-size:10.5px; opacity:0.6; text-transform:uppercase; letter-spacing:0.06em;}
+  .stat-box .stat-value{font-family:'Space Mono',monospace; font-weight:700; font-size:16px; margin-top:4px;}
+  .chart-wrap{background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; margin-bottom:20px;}
+  .low-stock-item{display:flex; justify-content:space-between; font-size:13px; padding:8px 0; border-bottom:1px solid var(--line);}
+  .receipt-lightbox{
+    position:fixed; inset:0; background:rgba(0,0,0,0.85); z-index:100;
+    display:none; align-items:center; justify-content:center; padding:20px;
+  }
+  .receipt-lightbox.open{display:flex;}
+  .receipt-lightbox img{max-width:100%; max-height:90vh; border-radius:8px;}
+
+  footer{
+    max-width:1080px; margin:0 auto; padding:36px 24px 60px;
+    display:flex; justify-content:space-between; align-items:center;
+    opacity:0.6; font-size:13px; flex-wrap:wrap; gap:10px;
+  }
+  footer .gear{background:none; border:none; opacity:0.5; font-size:16px;}
+
+  @media (max-width:640px){
+    .hero{padding:44px 20px 30px;}
+    .panel{max-width:100%;}
+    .nav-wrap .tab-btn span.txt{display:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <div class="brand">
+      <div class="stamp small"><div class="stamp-ring"></div><span id="brandInitial">IH</span></div>
+      <span id="brandName">Iron Hilton</span>
+    </div>
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="cardapio" onclick="switchTab('cardapio')">Cardápio</button>
+      <button class="tab-btn" data-tab="sobre" onclick="switchTab('sobre')">Sobre</button>
+    </nav>
+    <div class="header-actions">
+      <button class="icon-btn" onclick="openCart()" title="Meu pedido">
+        🛒<span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="tab-cardapio-hero">
+    <div class="stamp"><div class="stamp-ring"></div><span id="heroStampText">IRON<br>HILTON</span><small>SALGADOS &amp; KITS</small></div>
+    <div>
+      <span class="kicker">Feito na hora · sob encomenda</span>
+      <h1 id="heroTitle">Salgado bom<br>é Iron Hilton.</h1>
+      <p class="lead" id="heroLead">Coxinha, kibe, esfiha e kits pra festa — assados e fritos com carinho, entregues na sua porta. Peça pelo cardápio e pague no Pix.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('menuAnchor').scrollIntoView()">Ver cardápio</button>
+        <button class="btn-ghost" onclick="switchTab('sobre')">Sobre a casa</button>
+      </div>
+    </div>
+  </section>
+
+  <div id="menuAnchor"></div>
+  <div class="section-head">
+    <div class="stamp small"></div>
+    <h2>Cardápio</h2>
+  </div>
+  <div class="filters" id="filters"></div>
+  <div class="menu-grid" id="menuGrid"></div>
+
+  <section id="tab-sobre" style="display:none;">
+    <div class="section-head"><div class="stamp small"></div><h2>Sobre a casa</h2></div>
+    <div class="sobre">
+      <div class="sobre-card">
+        <h3>Nossa história</h3>
+        <p id="aboutText">Iron Hilton nasceu na cozinha de casa, com receita de família e capricho em cada dobra da massa. Cada salgado é feito para matar aquela fome de verdade — no lanche, na reunião ou na festa.</p>
+      </div>
+      <div class="sobre-card">
+        <h3>Entrega &amp; pagamento</h3>
+        <p>Entregamos combinando o horário com você. Pagamento via <strong>Pix</strong> — a chave aparece na hora de fechar o pedido, é só copiar e enviar o comprovante pelo WhatsApp.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span><span class="status-dot"></span>Aberto para encomendas</span>
+  <button class="gear" onclick="openAdminGate()" title="Área da equipe">⚙️ Área da equipe</button>
+</footer>
+
+<!-- CART OVERLAY -->
+<div class="overlay" id="cartOverlay">
+  <div class="panel">
+    <button class="close-x" onclick="closeOverlay('cartOverlay')">✕</button>
+    <h2>Meu pedido</h2>
+    <div id="cartItemsWrap"></div>
+    <div id="cartEmptyMsg" style="opacity:0.6; font-size:14px;">Seu carrinho está vazio. Adicione algo gostoso no cardápio!</div>
+
+    <div id="checkoutFields" style="display:none;">
+      <div class="cart-summary" id="cartSummary"></div>
+      <label>Seu nome</label>
+      <input type="text" id="custName" placeholder="Nome completo">
+      <label>Endereço de entrega</label>
+      <textarea id="custAddress" placeholder="Rua, número, bairro, complemento"></textarea>
+      <label>Telefone / WhatsApp</label>
+      <input type="tel" id="custPhone" placeholder="(00) 00000-0000">
+      <label>Observações</label>
+      <textarea id="custNotes" placeholder="Ponto do salgado, troco, etc. (opcional)"></textarea>
+
+      <div class="pix-box">
+        <div class="mono" style="font-size:11px; letter-spacing:0.08em; opacity:0.7; margin-bottom:4px;">CHAVE PIX PARA PAGAMENTO</div>
+        <div class="key" id="pixKeyDisplay">-</div>
+        <button class="copy-btn" onclick="copyPix()">Copiar chave Pix</button>
+        <div class="msg ok" id="pixCopyMsg" style="display:none;">Chave copiada!</div>
+      </div>
+
+      <label>Comprovante do Pix (foto ou print, opcional)</label>
+      <input type="file" id="custReceipt" accept="image/*">
+      <img id="custReceiptPreview" class="img-preview">
+
+      <button class="whats-btn" onclick="finalizarPedido()">Finalizar pedido no WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PASSWORD GATE -->
+<div class="overlay center" id="gateOverlay">
+  <div class="modal-box" style="max-width:340px; text-align:center;">
+    <button class="close-x" onclick="closeOverlay('gateOverlay')">✕</button>
+    <div class="stamp small" style="margin:0 auto 14px;"></div>
+    <h2>Área da equipe</h2>
+    <p style="font-size:13.5px; opacity:0.7; margin-top:-8px;">Digite a senha para editar o cardápio.</p>
+    <input class="pw-input" id="pwInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••">
+    <div class="msg error" id="pwError" style="display:none;">Senha incorreta. Tente de novo.</div>
+    <button class="save-btn" onclick="checkPassword()">Entrar</button>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="overlay" id="adminOverlay">
+  <div class="panel">
+    <button class="close-x" onclick="closeOverlay('adminOverlay')">✕</button>
+    <h2>Área da equipe</h2>
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" id="atBtn-itens" onclick="switchAdminTab('itens')">Itens</button>
+      <button class="admin-tab-btn" id="atBtn-insumos" onclick="switchAdminTab('insumos')">Insumos</button>
+      <button class="admin-tab-btn" id="atBtn-pedidos" onclick="switchAdminTab('pedidos')">Pedidos</button>
+      <button class="admin-tab-btn" id="atBtn-vendas" onclick="switchAdminTab('vendas')">Vendas</button>
+      <button class="admin-tab-btn" id="atBtn-config" onclick="switchAdminTab('config')">Config.</button>
+    </div>
+
+    <div id="atPanel-itens">
+      <div id="itemForm">
+        <input type="hidden" id="editingId">
+        <label>Nome do item</label>
+        <input type="text" id="fName" placeholder="Ex: Coxinha de frango">
+        <label>Categoria</label>
+        <select id="fCategory"></select>
+        <label>Preço (R$)</label>
+        <input type="number" id="fPrice" step="0.01" placeholder="Ex: 6.50">
+        <label>Estoque disponível (deixe em branco se for ilimitado)</label>
+        <input type="number" id="fStock" step="1" min="0" placeholder="Ex: 20">
+        <label>Descrição</label>
+        <textarea id="fDesc" placeholder="Conte o que tem, o tamanho, se serve quantas pessoas..."></textarea>
+        <label>Foto</label>
+        <input type="file" id="fImage" accept="image/*">
+        <img id="fImagePreview" class="img-preview">
+        <label>Posição da foto no card</label>
+        <div class="radio-row">
+          <label><input type="radio" name="fPos" value="top" checked> Em cima</label>
+          <label><input type="radio" name="fPos" value="bottom"> Embaixo</label>
+        </div>
+        <button class="save-btn" onclick="saveItem()">Salvar item</button>
+        <button class="btn-ghost" style="width:100%; margin-top:8px;" onclick="resetItemForm()">Cancelar edição</button>
+        <div class="msg ok" id="itemSavedMsg" style="display:none;">Item salvo!</div>
+      </div>
+      <h3 style="font-size:15px; margin:22px 0 10px;">Itens cadastrados</h3>
+      <div id="adminItemsList"></div>
+    </div>
+
+    <div id="atPanel-insumos" style="display:none;">
+      <p style="font-size:12.5px; opacity:0.6; margin-top:-6px;">Controle o que tem na cozinha — presunto, queijo, massa, embalagens etc. É separado do estoque dos salgados prontos.</p>
+      <input type="hidden" id="editingIngId">
+      <label>Nome do insumo</label>
+      <input type="text" id="ingName" placeholder="Ex: Presunto">
+      <label>Quantidade em estoque</label>
+      <input type="number" id="ingQty" step="0.01" placeholder="Ex: 2">
+      <label>Unidade</label>
+      <select id="ingUnit">
+        <option value="un">unidade(s)</option>
+        <option value="kg">kg</option>
+        <option value="g">g</option>
+        <option value="l">litro(s)</option>
+        <option value="ml">ml</option>
+        <option value="pacote">pacote(s)</option>
+        <option value="caixa">caixa(s)</option>
+      </select>
+      <label>Avisar quando estoque ficar abaixo de</label>
+      <input type="number" id="ingMin" step="0.01" placeholder="Ex: 1">
+      <button class="save-btn" onclick="saveIngredient()">Salvar insumo</button>
+      <button class="btn-ghost" style="width:100%; margin-top:8px;" onclick="resetIngredientForm()">Cancelar edição</button>
+      <div class="msg ok" id="ingSavedMsg" style="display:none;">Insumo salvo!</div>
+
+      <h3 style="font-size:15px; margin:22px 0 10px;">Insumos cadastrados</h3>
+      <div id="adminIngredientsList"></div>
+    </div>
+
+    <div id="atPanel-pedidos" style="display:none;">
+      <p style="font-size:12.5px; opacity:0.6; margin-top:-6px;">Só quem tem a senha vê essa lista. Pedido mais recente primeiro.</p>
+      <div id="ordersList"></div>
+    </div>
+
+    <div id="atPanel-vendas" style="display:none;">
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-label">Hoje</div><div class="stat-value" id="statHoje">R$ 0,00</div></div>
+        <div class="stat-box"><div class="stat-label">7 dias</div><div class="stat-value" id="statSemana">R$ 0,00</div></div>
+        <div class="stat-box"><div class="stat-label">30 dias</div><div class="stat-value" id="statMes">R$ 0,00</div></div>
+      </div>
+      <div class="chart-wrap"><canvas id="salesChart" height="180"></canvas></div>
+      <h3 style="font-size:15px; margin:18px 0 8px;">Estoque acabando</h3>
+      <div id="lowStockList"></div>
+    </div>
+
+    <div id="atPanel-config" style="display:none;">
+      <label>Categorias de itens</label>
+      <div class="cat-manage" id="catManage"></div>
+      <div class="cat-add-row">
+        <input type="text" id="newCatInput" placeholder="Nova categoria, ex: Doces">
+        <button onclick="addCategory()">Adicionar</button>
+      </div>
+      <label>Nome da loja</label>
+      <input type="text" id="cStoreName">
+      <label>Iniciais do carimbo (ex: IH)</label>
+      <input type="text" id="cInitials" maxlength="4">
+      <label>Título de destaque (hero)</label>
+      <input type="text" id="cHeroTitle">
+      <label>Texto de destaque (hero)</label>
+      <textarea id="cHeroLead"></textarea>
+      <label>Texto "Sobre a casa"</label>
+      <textarea id="cAbout"></textarea>
+      <label>Chave Pix</label>
+      <input type="text" id="cPix" placeholder="CPF, e-mail, telefone ou chave aleatória">
+      <label>WhatsApp para pedidos (só números, com DDD)</label>
+      <input type="text" id="cWhats" placeholder="11999999999">
+      <label>Taxa de entrega (R$)</label>
+      <input type="number" id="cDelivery" step="0.01">
+      <button class="save-btn" onclick="saveSettings()">Salvar configurações</button>
+      <div class="msg ok" id="configSavedMsg" style="display:none;">Configurações salvas!</div>
+    </div>
+  </div>
+</div>
+
+<div class="receipt-lightbox" id="receiptLightbox" onclick="this.classList.remove('open')">
+  <img id="receiptLightboxImg">
+</div>
+
+<!-- ===================== FIREBASE ===================== -->
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-analytics-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+<script>
+  // Configuração do seu projeto Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyArg1mrrKR5zFQ45WwXdUCorUvj1STTbys",
+    authDomain: "heronilton-64892.firebaseapp.com",
+    projectId: "heronilton-64892",
+    storageBucket: "heronilton-64892.firebasestorage.app",
+    messagingSenderId: "156637483108",
+    appId: "1:156637483108:web:1a9a37335f8fe3ffb30f71",
+    measurementId: "G-PJREXPHX5T"
+  };
+
+  // Inicializa o Firebase
+  firebase.initializeApp(firebaseConfig);
+  try { firebase.analytics(); } catch (e) { /* analytics pode falhar em localhost/file://, sem problema */ }
+  const db = firebase.firestore();
+
+  /*
+    Adaptador window.storage -> Firestore
+    Todo o resto do seu código (loadData, persistProducts, persistSettings,
+    persistOrders, persistIngredients etc.) já chama window.storage.get/set,
+    então NADA precisa mudar no resto do arquivo: só trocamos onde os dados
+    são realmente guardados (agora no Firestore, em vez do storage local).
+  */
+  function storageDocId(key, shared) {
+    return (shared ? 'shared_' : 'private_') + key;
+  }
+
+  window.storage = {
+    async get(key, shared) {
+      try {
+        const snap = await db.collection('storage').doc(storageDocId(key, shared)).get();
+        if (!snap.exists) return null;
+        return { key, value: snap.data().value, shared: !!shared };
+      } catch (e) {
+        console.error('storage.get erro:', e);
+        return null;
+      }
+    },
+    async set(key, value, shared) {
+      try {
+        await db.collection('storage').doc(storageDocId(key, shared)).set({
+          value,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        return { key, value, shared: !!shared };
+      } catch (e) {
+        console.error('storage.set erro:', e);
+        return null;
+      }
+    },
+    async delete(key, shared) {
+      try {
+        await db.collection('storage').doc(storageDocId(key, shared)).delete();
+        return { key, deleted: true, shared: !!shared };
+      } catch (e) {
+        console.error('storage.delete erro:', e);
+        return null;
+      }
+    },
+    async list(prefix, shared) {
+      try {
+        const scopePrefix = shared ? 'shared_' : 'private_';
+        const snap = await db.collection('storage').get();
+        const keys = [];
+        snap.forEach(doc => {
+          if (doc.id.startsWith(scopePrefix)) {
+            const k = doc.id.slice(scopePrefix.length);
+            if (!prefix || k.startsWith(prefix)) keys.push(k);
+          }
+        });
+        return { keys, prefix, shared: !!shared };
+      } catch (e) {
+        console.error('storage.list erro:', e);
+        return null;
+      }
+    },
+    // Fica "escutando" o Firestore: sempre que o dado mudar (em QUALQUER
+    // aparelho), o callback roda de novo automaticamente aqui também.
+    // É isso que faz um celular ver na hora o que foi salvo no outro.
+    watch(key, shared, callback) {
+      const docId = storageDocId(key, shared);
+      return db.collection('storage').doc(docId).onSnapshot(
+        snap => callback(snap.exists ? { key, value: snap.data().value, shared: !!shared } : null),
+        err => console.error('storage.watch erro (' + key + '):', err)
+      );
+    }
+  };
+</script>
+<!-- =================== FIM FIREBASE ==================== -->
+
+<script>
+const ADMIN_PASSWORD = "4040"; // quarenta quarenta
+let products = [];
+let orders = [];
+let ingredients = [];
+let settings = {
+  storeName: "Iron Hilton",
+  initials: "IH",
+  heroTitle: "Salgado bom<br>é Iron Hilton.",
+  heroLead: "Coxinha, kibe, esfiha e kits pra festa — assados e fritos com carinho, entregues na sua porta. Peça pelo cardápio e pague no Pix.",
+  aboutText: "Iron Hilton nasceu na cozinha de casa, com receita de família e capricho em cada dobra da massa. Cada salgado é feito para matar aquela fome de verdade — no lanche, na reunião ou na festa.",
+  pixKey: "iron.hilton@pix.com.br",
+  whatsapp: "5511999999999",
+  deliveryFee: 5,
+  categories: ["salgado","kit"]
+};
+let cart = {}; // id -> qty
+let currentFilter = "todos";
+let currentImageBase64 = "";
+let currentReceiptBase64 = "";
+let salesChartInstance = null;
+
+const defaultProducts = [
+  {id:"p1", name:"Coxinha de Frango", category:"salgado", price:6.5, stock:null, description:"Massa cremosa, recheio generoso de frango desfiado, empanada e frita na hora.", image:"", imagePosition:"top"},
+  {id:"p2", name:"Kibe Recheado", category:"salgado", price:6.0, stock:null, description:"Casquinha crocante por fora, recheio de carne e temperos por dentro.", image:"", imagePosition:"top"},
+  {id:"p3", name:"Kit Festa 50 un.", category:"kit", price:75.0, stock:null, description:"50 salgados sortidos, prontos pra esquentar. Ideal pra reunião de família ou comemoração na escola.", image:"", imagePosition:"top"}
+];
+const LOW_STOCK_THRESHOLD = 5;
+const defaultIngredients = [
+  {id:"i1", name:"Presunto", quantity:2, unit:"kg", minStock:1},
+  {id:"i2", name:"Queijo", quantity:1.5, unit:"kg", minStock:1},
+  {id:"i3", name:"Massa de coxinha", quantity:5, unit:"kg", minStock:2}
+];
+
+async function loadData(){
+  try{
+    const p = await window.storage.get('products', true);
+    products = p ? JSON.parse(p.value) : defaultProducts;
+  }catch(e){ products = defaultProducts; }
+  try{
+    const s = await window.storage.get('settings', true);
+    if(s) settings = {...settings, ...JSON.parse(s.value)};
+    if(!settings.categories || !settings.categories.length) settings.categories = ["salgado","kit"];
+  }catch(e){ /* usa defaults */ }
+  try{
+    const o = await window.storage.get('orders', true);
+    orders = o ? JSON.parse(o.value) : [];
+  }catch(e){ orders = []; }
+  try{
+    const ing = await window.storage.get('ingredients', true);
+    ingredients = ing ? JSON.parse(ing.value) : defaultIngredients;
+  }catch(e){ ingredients = defaultIngredients; }
+  if(!(await hasIngredientsSaved())){
+    await window.storage.set('ingredients', JSON.stringify(ingredients), true);
+  }
+
+  if(!(await hasProductsSaved())){
+    await window.storage.set('products', JSON.stringify(products), true);
+  }
+  applySettingsToUI();
+  renderFilters();
+  renderMenu();
+
+  iniciarSincronizacaoTempoReal();
+}
+
+/*
+  Sincronização em tempo real: qualquer alteração salva no Firestore por
+  QUALQUER dispositivo chega aqui automaticamente e atualiza a tela na hora,
+  sem precisar dar F5. É isso que resolve "mudei em um aparelho e não
+  aparece no outro".
+*/
+function iniciarSincronizacaoTempoReal(){
+  window.storage.watch('products', true, (p) => {
+    products = p ? JSON.parse(p.value) : defaultProducts;
+    renderFilters();
+    renderMenu();
+    renderAdminItemsList();
+    populateCategorySelect();
+  });
+
+  window.storage.watch('settings', true, (s) => {
+    if(s) settings = {...settings, ...JSON.parse(s.value)};
+    if(!settings.categories || !settings.categories.length) settings.categories = ["salgado","kit"];
+    applySettingsToUI();
+    renderFilters();
+    renderMenu();
+    renderCart();
+    renderCategoryManage();
+  });
+
+  window.storage.watch('orders', true, (o) => {
+    orders = o ? JSON.parse(o.value) : [];
+    renderOrdersList();
+    renderSalesDashboard();
+  });
+
+  window.storage.watch('ingredients', true, (ing) => {
+    ingredients = ing ? JSON.parse(ing.value) : defaultIngredients;
+    renderIngredientsList();
+    renderSalesDashboard();
+  });
+}
+async function hasProductsSaved(){
+  try{
+    const p = await window.storage.get('products', true);
+    return !!p;
+  }catch(e){ return false; }
+}
+async function hasIngredientsSaved(){
+  try{
+    const ing = await window.storage.get('ingredients', true);
+    return !!ing;
+  }catch(e){ return false; }
+}
+
+function avisarFalhaSalvar(oQue){
+  alert('⚠️ Não consegui salvar ' + oQue + ' no Firebase. Verifique sua internet e as regras do Firestore. (Detalhes no console do navegador)');
+}
+async function persistProducts(){
+  const r = await window.storage.set('products', JSON.stringify(products), true);
+  if(!r) avisarFalhaSalvar('os itens do cardápio');
+}
+async function persistSettings(){
+  const r = await window.storage.set('settings', JSON.stringify(settings), true);
+  if(!r) avisarFalhaSalvar('as configurações');
+}
+async function persistOrders(){
+  const r = await window.storage.set('orders', JSON.stringify(orders), true);
+  if(!r) avisarFalhaSalvar('o pedido');
+}
+async function persistIngredients(){
+  const r = await window.storage.set('ingredients', JSON.stringify(ingredients), true);
+  if(!r) avisarFalhaSalvar('os insumos');
+}
+
+function applySettingsToUI(){
+  document.getElementById('brandName').textContent = settings.storeName;
+  document.getElementById('brandInitial').textContent = settings.initials;
+  document.getElementById('heroStampText').innerHTML = settings.initials.length<=3 ? settings.initials.toUpperCase() : "IRON<br>HILTON";
+  document.getElementById('heroTitle').innerHTML = settings.heroTitle;
+  document.getElementById('heroLead').textContent = settings.heroLead;
+  document.getElementById('aboutText').textContent = settings.aboutText;
+  document.getElementById('pixKeyDisplay').textContent = settings.pixKey;
+  document.title = settings.storeName + " — Salgados & Kits";
+}
+
+/* ---------- Tabs principais ---------- */
+function switchTab(tab){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active', b.dataset.tab===tab));
+  document.getElementById('tab-cardapio-hero').style.display = tab==='cardapio' ? 'flex' : 'none';
+  document.getElementById('menuAnchor').style.display = tab==='cardapio' ? 'block' : 'none';
+  document.querySelector('.section-head').style.display = tab==='cardapio' ? 'flex' : 'none';
+  document.getElementById('filters').style.display = tab==='cardapio' ? 'flex' : 'none';
+  document.getElementById('menuGrid').style.display = tab==='cardapio' ? 'grid' : 'none';
+  document.getElementById('tab-sobre').style.display = tab==='sobre' ? 'block' : 'none';
+}
+
+/* ---------- Menu / filtros ---------- */
+function catLabel(c){ return c.charAt(0).toUpperCase() + c.slice(1); }
+
+function renderFilters(){
+  const cats = ["todos", ...settings.categories];
+  const wrap = document.getElementById('filters');
+  wrap.innerHTML = "";
+  cats.forEach(c=>{
+    const b = document.createElement('button');
+    b.className = 'filter-btn' + (currentFilter===c ? ' active' : '');
+    b.textContent = c==='todos' ? 'Todos' : catLabel(c);
+    b.onclick = ()=>{ currentFilter = c; renderFilters(); renderMenu(); };
+    wrap.appendChild(b);
+  });
+}
+
+function renderMenu(){
+  const grid = document.getElementById('menuGrid');
+  const list = products.filter(p => currentFilter==='todos' || p.category===currentFilter);
+  if(list.length===0){
+    grid.innerHTML = "";
+    grid.insertAdjacentHTML('afterend', '<div class="empty-state" id="emptyMsg">Nenhum item por aqui ainda. Volte em breve!</div>');
+    return;
+  }
+  const old = document.getElementById('emptyMsg');
+  if(old) old.remove();
+
+  grid.innerHTML = list.map(p=>{
+    const imgHtml = p.image
+      ? `<div class="img-wrap"><img src="${p.image}" alt="${escapeHtml(p.name)}"></div>`
+      : `<div class="img-wrap empty">sem foto</div>`;
+    const hasStock = p.stock !== null && p.stock !== undefined && p.stock !== "";
+    const isOut = hasStock && Number(p.stock) <= 0;
+    const isLow = hasStock && Number(p.stock) > 0 && Number(p.stock) <= LOW_STOCK_THRESHOLD;
+    let badge = "";
+    if(isOut) badge = `<span class="stock-badge out">Esgotado</span>`;
+    else if(isLow) badge = `<span class="stock-badge low">Últimas ${p.stock} unidades</span>`;
+    const bodyHtml = `
+      <div class="card-body">
+        <span class="card-cat">${catLabel(p.category)}</span>
+        <h3>${escapeHtml(p.name)}</h3>
+        <p>${escapeHtml(p.description||"")}</p>
+        ${badge}
+        <div class="card-foot">
+          <span class="price">R$ ${Number(p.price).toFixed(2).replace('.',',')}</span>
+          <button class="add-btn" onclick="addToCart('${p.id}')" ${isOut?'disabled':''}>+</button>
+        </div>
+      </div>`;
+    const order = p.imagePosition === 'bottom' ? [bodyHtml, imgHtml] : [imgHtml, bodyHtml];
+    return `<div class="card">${order.join('')}</div>`;
+  }).join('');
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+/* ---------- Carrinho ---------- */
+function stockLimit(p){
+  return (p.stock === null || p.stock === undefined || p.stock === "") ? Infinity : Number(p.stock);
+}
+function addToCart(id){
+  const p = products.find(x=>x.id===id);
+  const limit = p ? stockLimit(p) : Infinity;
+  const current = cart[id]||0;
+  if(current >= limit){
+    alert('Não temos mais estoque desse item no momento.');
+    return;
+  }
+  cart[id] = current + 1;
+  updateCartCount();
+  renderCart();
+}
+function changeQty(id, delta){
+  const p = products.find(x=>x.id===id);
+  const limit = p ? stockLimit(p) : Infinity;
+  const next = (cart[id]||0) + delta;
+  if(delta > 0 && next > limit){
+    alert('Não temos mais estoque desse item no momento.');
+    return;
+  }
+  cart[id] = next;
+  if(cart[id] <= 0) delete cart[id];
+  updateCartCount();
+  renderCart();
+}
+function updateCartCount(){
+  const total = Object.values(cart).reduce((a,b)=>a+b,0);
+  document.getElementById('cartCount').textContent = total;
+}
+function openCart(){
+  renderCart();
+  document.getElementById('cartOverlay').classList.add('open');
+}
+function closeOverlay(id){
+  document.getElementById(id).classList.remove('open');
+}
+function renderCart(){
+  const wrap = document.getElementById('cartItemsWrap');
+  const ids = Object.keys(cart);
+  const emptyMsg = document.getElementById('cartEmptyMsg');
+  const checkoutFields = document.getElementById('checkoutFields');
+  if(ids.length===0){
+    wrap.innerHTML = "";
+    emptyMsg.style.display = 'block';
+    checkoutFields.style.display = 'none';
+    return;
+  }
+  emptyMsg.style.display = 'none';
+  checkoutFields.style.display = 'block';
+
+  let subtotal = 0;
+  wrap.innerHTML = ids.map(id=>{
+    const p = products.find(x=>x.id===id);
+    if(!p) return '';
+    const qty = cart[id];
+    subtotal += p.price * qty;
+    return `
+      <div class="cart-item">
+        ${p.image ? `<img src="${p.image}">` : `<img>`}
+        <div class="ci-info">
+          <div class="ci-name">${escapeHtml(p.name)}</div>
+          <span class="mono" style="font-size:12.5px;">R$ ${Number(p.price).toFixed(2).replace('.',',')}</span>
+          <div class="qty-ctrl">
+            <button onclick="changeQty('${id}',-1)">−</button>
+            <span>${qty}</span>
+            <button onclick="changeQty('${id}',1)">+</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+
+  const delivery = Number(settings.deliveryFee)||0;
+  const total = subtotal + delivery;
+  document.getElementById('cartSummary').innerHTML = `
+    <div class="row"><span>Subtotal</span><span class="mono">R$ ${subtotal.toFixed(2).replace('.',',')}</span></div>
+    <div class="row"><span>Entrega</span><span class="mono">R$ ${delivery.toFixed(2).replace('.',',')}</span></div>
+    <div class="row total"><span>Total</span><span class="mono">R$ ${total.toFixed(2).replace('.',',')}</span></div>
+  `;
+}
+
+function initReceiptUpload(){
+  const el = document.getElementById('custReceipt');
+  if(!el) return;
+  el.addEventListener('change', function(e){
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      currentReceiptBase64 = ev.target.result;
+      const prev = document.getElementById('custReceiptPreview');
+      prev.src = currentReceiptBase64;
+      prev.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function copyPix(){
+  navigator.clipboard.writeText(settings.pixKey).then(()=>{
+    const msg = document.getElementById('pixCopyMsg');
+    msg.style.display = 'block';
+    setTimeout(()=> msg.style.display='none', 2000);
+  }).catch(()=>{ alert('Não foi possível copiar. Chave Pix: ' + settings.pixKey); });
+}
+
+async function finalizarPedido(){
+  const name = document.getElementById('custName').value.trim();
+  const address = document.getElementById('custAddress').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const notes = document.getElementById('custNotes').value.trim();
+  if(!name || !address || !phone){
+    alert('Preencha nome, endereço e telefone pra gente conseguir entregar :)');
+    return;
+  }
+  let subtotal = 0;
+  const orderItems = Object.keys(cart).map(id=>{
+    const p = products.find(x=>x.id===id);
+    if(!p) return null;
+    const qty = cart[id];
+    subtotal += p.price*qty;
+    return {id, name:p.name, qty, price:p.price};
+  }).filter(Boolean);
+
+  const linhas = orderItems.map(it=>`${it.qty}x ${it.name} - R$ ${(it.price*it.qty).toFixed(2).replace('.',',')}`).join('%0A');
+  const delivery = Number(settings.deliveryFee)||0;
+  const total = subtotal + delivery;
+
+  // salva o pedido na área do admin
+  const order = {
+    id: 'o' + Date.now(),
+    date: new Date().toISOString(),
+    customer: {name, address, phone, notes},
+    items: orderItems,
+    subtotal, delivery, total,
+    receipt: currentReceiptBase64 || ""
+  };
+  orders.unshift(order);
+  await persistOrders();
+
+  // baixa estoque dos itens com controle de estoque
+  orderItems.forEach(it=>{
+    const p = products.find(x=>x.id===it.id);
+    if(p && p.stock !== null && p.stock !== undefined && p.stock !== ""){
+      p.stock = Math.max(0, Number(p.stock) - it.qty);
+    }
+  });
+  await persistProducts();
+  renderMenu();
+
+  let msg = `*Pedido - ${settings.storeName}*%0A%0A`;
+  msg += `${linhas}%0A%0A`;
+  msg += `Entrega: R$ ${delivery.toFixed(2).replace('.',',')}%0A`;
+  msg += `*Total: R$ ${total.toFixed(2).replace('.',',')}*%0A%0A`;
+  msg += `Nome: ${encodeURIComponent(name)}%0A`;
+  msg += `Endereço: ${encodeURIComponent(address)}%0A`;
+  msg += `Telefone: ${encodeURIComponent(phone)}%0A`;
+  if(notes) msg += `Obs: ${encodeURIComponent(notes)}%0A`;
+  msg += `%0APagamento via Pix (chave: ${encodeURIComponent(settings.pixKey)}) — envio o comprovante aqui!`;
+
+  window.open(`https://wa.me/${settings.whatsapp}?text=${msg}`, '_blank');
+
+  // limpa carrinho e formulário
+  cart = {};
+  currentReceiptBase64 = "";
+  updateCartCount();
+  document.getElementById('custName').value = "";
+  document.getElementById('custAddress').value = "";
+  document.getElementById('custPhone').value = "";
+  document.getElementById('custNotes').value = "";
+  const rp = document.getElementById('custReceiptPreview');
+  rp.style.display = 'none'; rp.src = "";
+  document.getElementById('custReceipt').value = "";
+  renderCart();
+}
+
+/* ---------- Admin: senha ---------- */
+function openAdminGate(){
+  document.getElementById('pwInput').value = "";
+  document.getElementById('pwError').style.display = 'none';
+  document.getElementById('gateOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('pwInput').focus(), 100);
+}
+function checkPassword(){
+  const val = document.getElementById('pwInput').value.trim();
+  if(val === ADMIN_PASSWORD){
+    closeOverlay('gateOverlay');
+    openAdminPanel();
+  } else {
+    document.getElementById('pwError').style.display = 'block';
+  }
+}
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Enter' && document.getElementById('gateOverlay').classList.contains('open')){
+    checkPassword();
+  }
+});
+
+/* ---------- Admin: painel ---------- */
+function openAdminPanel(){
+  resetItemForm();
+  resetIngredientForm();
+  renderAdminItemsList();
+  fillConfigForm();
+  document.getElementById('adminOverlay').classList.add('open');
+}
+function switchAdminTab(tab){
+  ['itens','insumos','pedidos','vendas','config'].forEach(t=>{
+    document.getElementById('atBtn-'+t).classList.toggle('active', tab===t);
+    document.getElementById('atPanel-'+t).style.display = tab===t ? 'block' : 'none';
+  });
+  if(tab==='insumos') renderIngredientsList();
+  if(tab==='pedidos') renderOrdersList();
+  if(tab==='vendas') renderSalesDashboard();
+}
+
+document.getElementById('fImage').addEventListener('change', function(e){
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    currentImageBase64 = ev.target.result;
+    const prev = document.getElementById('fImagePreview');
+    prev.src = currentImageBase64;
+    prev.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+});
+
+function populateCategorySelect(selected){
+  const sel = document.getElementById('fCategory');
+  sel.innerHTML = settings.categories.map(c=>`<option value="${c}">${catLabel(c)}</option>`).join('');
+  if(selected) sel.value = selected;
+}
+
+function resetItemForm(){
+  document.getElementById('editingId').value = "";
+  document.getElementById('fName').value = "";
+  populateCategorySelect();
+  document.getElementById('fPrice').value = "";
+  document.getElementById('fStock').value = "";
+  document.getElementById('fDesc').value = "";
+  document.getElementById('fImage').value = "";
+  document.getElementById('fImagePreview').style.display = 'none';
+  document.querySelector('input[name=fPos][value=top]').checked = true;
+  currentImageBase64 = "";
+  document.getElementById('itemSavedMsg').style.display = 'none';
+}
+
+async function saveItem(){
+  const name = document.getElementById('fName').value.trim();
+  const price = parseFloat(document.getElementById('fPrice').value);
+  if(!name || isNaN(price)){
+    alert('Preencha ao menos o nome e o preço do item.');
+    return;
+  }
+  const editingId = document.getElementById('editingId').value;
+  const stockRaw = document.getElementById('fStock').value;
+  const item = {
+    id: editingId || ('p' + Date.now()),
+    name,
+    category: document.getElementById('fCategory').value,
+    price,
+    stock: stockRaw === "" ? null : Math.max(0, parseInt(stockRaw)),
+    description: document.getElementById('fDesc').value.trim(),
+    image: currentImageBase64 || (editingId ? (products.find(p=>p.id===editingId)?.image || "") : ""),
+    imagePosition: document.querySelector('input[name=fPos]:checked').value
+  };
+  if(editingId){
+    products = products.map(p=> p.id===editingId ? item : p);
+  } else {
+    products.push(item);
+  }
+  await persistProducts();
+  renderAdminItemsList();
+  renderMenu();
+  document.getElementById('itemSavedMsg').style.display = 'block';
+  setTimeout(()=>{ resetItemForm(); }, 900);
+}
+
+function editItem(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('editingId').value = p.id;
+  document.getElementById('fName').value = p.name;
+  populateCategorySelect(p.category);
+  document.getElementById('fPrice').value = p.price;
+  document.getElementById('fStock').value = (p.stock===null||p.stock===undefined) ? "" : p.stock;
+  document.getElementById('fDesc').value = p.description || "";
+  document.querySelector(`input[name=fPos][value=${p.imagePosition||'top'}]`).checked = true;
+  currentImageBase64 = p.image || "";
+  const prev = document.getElementById('fImagePreview');
+  if(p.image){ prev.src = p.image; prev.style.display = 'block'; } else { prev.style.display='none'; }
+  window.scrollTo({top:0});
+  document.getElementById('itemForm').scrollIntoView({behavior:'smooth'});
+}
+
+async function deleteItem(id){
+  if(!confirm('Remover este item do cardápio?')) return;
+  products = products.filter(p=>p.id!==id);
+  await persistProducts();
+  renderAdminItemsList();
+  renderMenu();
+}
+
+function renderAdminItemsList(){
+  const wrap = document.getElementById('adminItemsList');
+  if(products.length===0){
+    wrap.innerHTML = '<p style="opacity:0.6; font-size:13.5px;">Nenhum item cadastrado ainda.</p>';
+    return;
+  }
+  wrap.innerHTML = products.map(p=>`
+    <div class="item-row">
+      ${p.image ? `<img src="${p.image}">` : `<img>`}
+      <div class="ir-info">
+        <div class="ir-name">${escapeHtml(p.name)}</div>
+        <div class="ir-meta">${catLabel(p.category)} · R$ ${Number(p.price).toFixed(2).replace('.',',')} · estoque: ${(p.stock===null||p.stock===undefined)?'ilimitado':p.stock} · foto ${p.imagePosition==='bottom'?'embaixo':'em cima'}</div>
+      </div>
+      <div class="ir-actions">
+        <button onclick="editItem('${p.id}')" title="Editar">✏️</button>
+        <button onclick="deleteItem('${p.id}')" title="Remover">🗑️</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ---------- Admin: insumos (estoque de ingredientes) ---------- */
+function unitLabel(u){
+  const map = {un:'un', kg:'kg', g:'g', l:'L', ml:'ml', pacote:'pct', caixa:'cx'};
+  return map[u] || u;
+}
+function resetIngredientForm(){
+  document.getElementById('editingIngId').value = "";
+  document.getElementById('ingName').value = "";
+  document.getElementById('ingQty').value = "";
+  document.getElementById('ingUnit').value = "kg";
+  document.getElementById('ingMin').value = "";
+  document.getElementById('ingSavedMsg').style.display = 'none';
+}
+async function saveIngredient(){
+  const name = document.getElementById('ingName').value.trim();
+  const qty = parseFloat(document.getElementById('ingQty').value);
+  if(!name || isNaN(qty)){
+    alert('Preencha ao menos o nome e a quantidade do insumo.');
+    return;
+  }
+  const editingId = document.getElementById('editingIngId').value;
+  const minRaw = document.getElementById('ingMin').value;
+  const item = {
+    id: editingId || ('i' + Date.now()),
+    name,
+    quantity: qty,
+    unit: document.getElementById('ingUnit').value,
+    minStock: minRaw === "" ? 1 : parseFloat(minRaw)
+  };
+  if(editingId){
+    ingredients = ingredients.map(i=> i.id===editingId ? item : i);
+  } else {
+    ingredients.push(item);
+  }
+  await persistIngredients();
+  renderIngredientsList();
+  document.getElementById('ingSavedMsg').style.display = 'block';
+  setTimeout(()=>{ resetIngredientForm(); }, 900);
+}
+function editIngredient(id){
+  const i = ingredients.find(x=>x.id===id);
+  if(!i) return;
+  document.getElementById('editingIngId').value = i.id;
+  document.getElementById('ingName').value = i.name;
+  document.getElementById('ingQty').value = i.quantity;
+  document.getElementById('ingUnit').value = i.unit;
+  document.getElementById('ingMin').value = i.minStock;
+}
+async function deleteIngredient(id){
+  if(!confirm('Remover este insumo do controle de estoque?')) return;
+  ingredients = ingredients.filter(i=>i.id!==id);
+  await persistIngredients();
+  renderIngredientsList();
+}
+function renderIngredientsList(){
+  const wrap = document.getElementById('adminIngredientsList');
+  if(ingredients.length===0){
+    wrap.innerHTML = '<p style="opacity:0.6; font-size:13.5px;">Nenhum insumo cadastrado ainda.</p>';
+    return;
+  }
+  wrap.innerHTML = ingredients.map(i=>{
+    const low = Number(i.quantity) <= Number(i.minStock);
+    return `
+    <div class="item-row">
+      <div class="ir-info">
+        <div class="ir-name">${escapeHtml(i.name)} ${low ? '<span class="stock-badge low" style="margin-left:6px;">Acabando</span>' : ''}</div>
+        <div class="ir-meta">${i.quantity} ${unitLabel(i.unit)} em estoque · avisa abaixo de ${i.minStock} ${unitLabel(i.unit)}</div>
+      </div>
+      <div class="ir-actions">
+        <button onclick="editIngredient('${i.id}')" title="Editar">✏️</button>
+        <button onclick="deleteIngredient('${i.id}')" title="Remover">🗑️</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ---------- Admin: categorias ---------- */
+function renderCategoryManage(){
+  const wrap = document.getElementById('catManage');
+  wrap.innerHTML = settings.categories.map(c=>`
+    <div class="cat-chip">${catLabel(c)}<button onclick="removeCategory('${c}')" title="Remover">✕</button></div>
+  `).join('');
+}
+async function addCategory(){
+  const input = document.getElementById('newCatInput');
+  const val = input.value.trim().toLowerCase();
+  if(!val) return;
+  if(settings.categories.includes(val)){ input.value=""; return; }
+  settings.categories.push(val);
+  input.value = "";
+  renderCategoryManage();
+  await persistSettings();
+  renderFilters();
+  populateCategorySelect();
+}
+async function removeCategory(cat){
+  const emUso = products.some(p=>p.category===cat);
+  if(emUso && !confirm('Existem itens usando essa categoria. Remover mesmo assim? Eles continuam salvos, só não vão aparecer nos filtros.')) return;
+  settings.categories = settings.categories.filter(c=>c!==cat);
+  if(currentFilter===cat) currentFilter = "todos";
+  renderCategoryManage();
+  await persistSettings();
+  renderFilters();
+  renderMenu();
+  populateCategorySelect();
+}
+
+/* ---------- Admin: pedidos ---------- */
+function openReceipt(src){
+  document.getElementById('receiptLightboxImg').src = src;
+  document.getElementById('receiptLightbox').classList.add('open');
+}
+function renderOrdersList(){
+  const wrap = document.getElementById('ordersList');
+  if(orders.length===0){
+    wrap.innerHTML = '<p style="opacity:0.6; font-size:13.5px;">Nenhum pedido registrado ainda.</p>';
+    return;
+  }
+  wrap.innerHTML = orders.map(o=>{
+    const d = new Date(o.date);
+    const dataFmt = d.toLocaleDateString('pt-BR') + ' às ' + d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    const itensTxt = o.items.map(it=>`${it.qty}x ${escapeHtml(it.name)}`).join(', ');
+    const receiptHtml = o.receipt
+      ? `<div class="or-receipt"><img src="${o.receipt}" onclick="openReceipt('${o.receipt}')"></div>`
+      : `<div class="or-receipt-missing">Sem comprovante anexado</div>`;
+    return `
+      <div class="order-row">
+        <div class="or-head">
+          <span class="or-name">${escapeHtml(o.customer.name)}</span>
+          <span class="or-total">R$ ${o.total.toFixed(2).replace('.',',')}</span>
+        </div>
+        <div class="or-date">${dataFmt}</div>
+        <div class="or-items">${itensTxt}</div>
+        <div class="or-meta">📍 ${escapeHtml(o.customer.address)} · 📞 ${escapeHtml(o.customer.phone)}</div>
+        ${o.customer.notes ? `<div class="or-meta">Obs: ${escapeHtml(o.customer.notes)}</div>` : ''}
+        ${receiptHtml}
+      </div>`;
+  }).join('');
+}
+
+/* ---------- Admin: painel de vendas ---------- */
+function renderSalesDashboard(){
+  const now = new Date();
+  const startOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const dayMs = 24*60*60*1000;
+
+  let hoje=0, semana=0, mes=0;
+  orders.forEach(o=>{
+    const d = new Date(o.date);
+    const diff = startOfDay - new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    if(diff===0) hoje += o.total;
+    if(diff <= 6*dayMs && diff >= 0) semana += o.total;
+    if(diff <= 29*dayMs && diff >= 0) mes += o.total;
+  });
+  document.getElementById('statHoje').textContent = 'R$ ' + hoje.toFixed(2).replace('.',',');
+  document.getElementById('statSemana').textContent = 'R$ ' + semana.toFixed(2).replace('.',',');
+  document.getElementById('statMes').textContent = 'R$ ' + mes.toFixed(2).replace('.',',');
+
+  // vendas por dia, últimos 7 dias
+  const labels = [];
+  const values = [];
+  for(let i=6; i>=0; i--){
+    const day = new Date(startOfDay.getTime() - i*dayMs);
+    labels.push(day.toLocaleDateString('pt-BR', {weekday:'short', day:'2-digit'}));
+    const total = orders.filter(o=>{
+      const d = new Date(o.date);
+      return d.getFullYear()===day.getFullYear() && d.getMonth()===day.getMonth() && d.getDate()===day.getDate();
+    }).reduce((sum,o)=>sum+o.total,0);
+    values.push(total.toFixed(2));
+  }
+
+  const ctx = document.getElementById('salesChart');
+  if(salesChartInstance) salesChartInstance.destroy();
+  if(window.Chart){
+    salesChartInstance = new Chart(ctx, {
+      type:'bar',
+      data:{ labels, datasets:[{ label:'Vendas (R$)', data:values, backgroundColor:'#B0512A', borderRadius:6 }] },
+      options:{
+        responsive:true,
+        plugins:{ legend:{ display:false } },
+        scales:{ y:{ beginAtZero:true, ticks:{ callback:v=>'R$ '+v } } }
+      }
+    });
+  }
+
+  // estoque acabando: itens do cardápio
+  const lowStock = products.filter(p=> p.stock!==null && p.stock!==undefined && Number(p.stock) <= LOW_STOCK_THRESHOLD);
+  const lowWrap = document.getElementById('lowStockList');
+  let html = '<div style="font-size:11.5px; font-weight:700; opacity:0.6; text-transform:uppercase; margin-bottom:4px;">Itens do cardápio</div>';
+  if(lowStock.length===0){
+    html += '<p style="opacity:0.6; font-size:13px;">Nenhum item com estoque baixo. 🎉</p>';
+  } else {
+    html += lowStock.map(p=>`
+      <div class="low-stock-item">
+        <span>${escapeHtml(p.name)}</span>
+        <span class="mono" style="${Number(p.stock)===0?'color:var(--rust); font-weight:700;':''}">${Number(p.stock)===0?'Esgotado':p.stock+' un.'}</span>
+      </div>
+    `).join('');
+  }
+  // estoque acabando: insumos (presunto, queijo etc)
+  const lowIngredients = ingredients.filter(i => Number(i.quantity) <= Number(i.minStock));
+  html += '<div style="font-size:11.5px; font-weight:700; opacity:0.6; text-transform:uppercase; margin:14px 0 4px;">Insumos</div>';
+  if(lowIngredients.length===0){
+    html += '<p style="opacity:0.6; font-size:13px;">Nenhum insumo acabando. 🎉</p>';
+  } else {
+    html += lowIngredients.map(i=>`
+      <div class="low-stock-item">
+        <span>${escapeHtml(i.name)}</span>
+        <span class="mono" style="${Number(i.quantity)<=0?'color:var(--rust); font-weight:700;':''}">${i.quantity} ${unitLabel(i.unit)}</span>
+      </div>
+    `).join('');
+  }
+  lowWrap.innerHTML = html;
+}
+
+/* ---------- Admin: configurações ---------- */
+function fillConfigForm(){
+  renderCategoryManage();
+  document.getElementById('cStoreName').value = settings.storeName;
+  document.getElementById('cInitials').value = settings.initials;
+  document.getElementById('cHeroTitle').value = settings.heroTitle;
+  document.getElementById('cHeroLead').value = settings.heroLead;
+  document.getElementById('cAbout').value = settings.aboutText;
+  document.getElementById('cPix').value = settings.pixKey;
+  document.getElementById('cWhats').value = settings.whatsapp;
+  document.getElementById('cDelivery').value = settings.deliveryFee;
+}
+async function saveSettings(){
+  settings.storeName = document.getElementById('cStoreName').value.trim() || "Iron Hilton";
+  settings.initials = document.getElementById('cInitials').value.trim() || "IH";
+  settings.heroTitle = document.getElementById('cHeroTitle').value.trim();
+  settings.heroLead = document.getElementById('cHeroLead').value.trim();
+  settings.aboutText = document.getElementById('cAbout').value.trim();
+  settings.pixKey = document.getElementById('cPix').value.trim();
+  settings.whatsapp = document.getElementById('cWhats').value.replace(/\D/g,'');
+  settings.deliveryFee = parseFloat(document.getElementById('cDelivery').value) || 0;
+  await persistSettings();
+  applySettingsToUI();
+  renderCart();
+  const msg = document.getElementById('configSavedMsg');
+  msg.style.display = 'block';
+  setTimeout(()=> msg.style.display='none', 2000);
+}
+
+initReceiptUpload();
+loadData();
+</script>
+</body>
+</html>
